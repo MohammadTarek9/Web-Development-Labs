@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    line-height: 1.6;
+}
+
+#first-div {
+    background: black;
+    text-align: center;
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 20px 20px;
+    margin-bottom: 30px;
+}
+
+#first-div h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+#first-div p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+#second-div {
+    background: white;
+    text-align: left;
+    color: black;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 30px auto;
+    max-width: 900px;
+    padding: 20px 20px;
+    border-radius: 15px;
+}
+
+
+#second-div h1 {
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: black;
+    text-align: center;
+    border-bottom: 3px solid black;
+    padding-bottom: 15px;
+}
+
+#second-div p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    text-align: justify;
+    color: #555;
+    padding: 0 20px;
+}
+
+#third-div {
+    background: white;
+    text-align: center;
+    color: black;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 30px auto 50px auto;
+    max-width: 900px;
+    padding: 20px 20px;
+    border-radius: 15px;
+}
+
+#third-div h1 {
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: black;
+    border-bottom: 3px solid black;
+    padding-bottom: 15px;
+}
+
+.projects-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.project-box {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px 25px;
+    width: 280px;
+    text-align: center;
+}
+
+.project-box h3 {
+    font-size: 1.4rem;
+    color: black;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.project-box p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    text-align: justify;
+    padding: 0;
+}

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        .add-movie {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .add-movie h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .rating-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .rating-input input {
+            width: 80px;
+        }
+
+        .add-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .add-btn:hover {
+            background: #5568d3;
+        }
+
+        .movie-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .movie-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .movie-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .movie-title {
+            font-size: 1.5rem;
+            color: #333;
+            flex: 1;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .movie-rating {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .movie-review {
+            color: #666;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .no-movies {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function MovieTracker() {
+            const [movies, setMovies] = useState([]);
+            const [movieName, setMovieName] = useState('');
+            const [rating, setRating] = useState('');
+            const [review, setReview] = useState('');
+
+            const addMovie = (e) => {
+                e.preventDefault();
+                
+                if (!movieName.trim()) {
+                    alert('Please enter a movie name!');
+                    return;
+                }
+
+                if (!rating || rating < 1 || rating > 5) {
+                    alert('Please enter a rating between 1 and 5!');
+                    return;
+                }
+
+                const newMovie = {
+                    id: Date.now(),
+                    name: movieName,
+                    rating: parseInt(rating),
+                    review: review
+                };
+
+                setMovies([...movies, newMovie]);
+                
+                setMovieName('');
+                setRating('');
+                setReview('');
+            };
+
+            const removeMovie = (id) => {
+                setMovies(movies.filter(movie => movie.id !== id));
+            };
+
+            const getStars = (rating) => {
+                return '⭐'.repeat(rating);
+            };
+
+            return (
+                <div className="container">
+                    <h1>My Movie Tracker</h1>
+                    
+                    <div className="add-movie">
+                        <h2>Add New Movie</h2>
+                        <form onSubmit={addMovie}>
+                            <div className="form-group">
+                                <label>Movie Name:</label>
+                                <input 
+                                    type="text" 
+                                    value={movieName}
+                                    onChange={(e) => setMovieName(e.target.value)}
+                                    placeholder="Enter movie name..."
+                                />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label>Rating (1-5 stars):</label>
+                                <div className="rating-input">
+                                    <input 
+                                        type="number" 
+                                        min="1" 
+                                        max="5"
+                                        value={rating}
+                                        onChange={(e) => setRating(e.target.value)}
+                                        placeholder="1-5"
+                                    />
+                                    <span>{getStars(parseInt(rating))}</span>
+                                </div>
+                            </div>
+                            
+                            <div className="form-group">
+                                <label>Review (optional):</label>
+                                <textarea 
+                                    value={review}
+                                    onChange={(e) => setReview(e.target.value)}
+                                    placeholder="Write your review here..."
+                                />
+                            </div>
+                            
+                            <button type="submit" className="add-btn">Add Movie</button>
+                        </form>
+                    </div>
+
+                    <div className="movie-list">
+                        {movies.length === 0 ? (
+                            <div className="no-movies">
+                                No movies added yet. Start tracking your movies.
+                            </div>
+                        ) : (
+                            movies.map(movie => (
+                                <div key={movie.id} className="movie-card">
+                                    <div className="movie-header">
+                                        <h3 className="movie-title">{movie.name}</h3>
+                                        <button 
+                                            className="delete-btn"
+                                            onClick={() => removeMovie(movie.id)}
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                    
+                                    <div className="movie-rating">
+                                        {getStars(movie.rating)}
+                                    </div>
+                                    
+                                    {
+                                        <div className="movie-review">
+                                            "{movie.review}"
+                                        </div>
+                                    }
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = document.getElementById('root');
+        ReactDOM.render(<MovieTracker />, root);
+    </script>
+</body>
+</html>
