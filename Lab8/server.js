@@ -10,7 +10,8 @@ posts = [{title: "First Post", content: "This is the content of the first post."
 app.post('/posts', (req, res) => {
     const post = {
         title: req.body['title'],
-        content: req.body['content']
+        content: req.body['content'],
+        comments: []
     }
     console.log("Adding this new post:", JSON.stringify(post));
     posts.push(post);
@@ -20,6 +21,10 @@ app.post('/posts', (req, res) => {
 
 // curl -X DELETE http://localhost:4000/posts/1
 app.delete('/posts/:id', (req, res) => {
+    if (!posts[req.params.id - 1]) {
+        res.status(404).send({error: "Post not found"});
+        return;
+    }
     console.log("Deleting post " + req.params.id);
     posts.splice(req.params.id - 1, 1);
     res.status(204).send();
@@ -29,9 +34,14 @@ app.delete('/posts/:id', (req, res) => {
 
 // curl -X PUT http://localhost:4000/posts/1 -H "Content-Type: application/json" -d '{"title": "Updated Post", "content": "This is the updated content."}' 
 app.put('/posts/:id', (req, res) => {
+    if (!posts[req.params.id - 1]) {
+        res.status(404).send({error: "Post not found"});
+        return;
+    }
     const updatedPost = {
         title: req.body['title'],
-        content: req.body['content']
+        content: req.body['content'],
+        comments: posts[req.params.id - 1].comments  // preserve comments
     }
     console.log("Updating post " + req.params.id + " to:", JSON.stringify(updatedPost));
     posts[req.params.id - 1] = updatedPost;
@@ -49,11 +59,19 @@ app.get('/posts', (req, res) => {
 
 // curl http://localhost:4000/posts/1/comments
 app.get('/posts/:id/comments', (req, res) => {
+    if (!posts[req.params.id - 1]) {
+        res.status(404).send({error: "Post not found"});
+        return;
+    }
     res.status(200).send(posts[req.params.id - 1].comments);
     res.end(); 
 });
 // curl -X POST http://localhost:4000/posts/1/comments -H "Content-Type: application/json" -d '{"comment": "This is a new comment."}'
 app.post('/posts/:id/comments', (req, res) => {
+    if (!posts[req.params.id - 1]) {
+        res.status(404).send({error: "Post not found"});
+        return;
+    }
     const comment = req.body['comment'];
     console.log("Adding this new comment to post " + req.params.id + ":", comment);
     posts[req.params.id - 1].comments.push(comment);
